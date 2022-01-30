@@ -19,18 +19,18 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div>
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light ps-5">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
-                        <i class="fas fa-address-book fs-2"></i>
+                        
                         <span class="mb-2">AddressBook</span>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse" id="navbarColor02">
+                    <div class="collapse navbar-collapse ms-5" id="navbarColor02">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
                                <asp:HyperLink ID="hlCountry" runat="server" NavigateUrl="~/AdminPanel/Country/CountryList.aspx" CssClass="nav-link">Country</asp:HyperLink>
@@ -58,12 +58,6 @@
                                 </div>
                             </li>-->
                         </ul>
-                        <div class="d-flex">
-                            <form>
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
                     </div>
                 </div>
             </nav>
