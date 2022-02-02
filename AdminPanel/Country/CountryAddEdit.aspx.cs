@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -35,7 +36,7 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
             return;
         }
 
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         conn.Open();
         SqlCommand sc = new SqlCommand();
         sc.Connection = conn;

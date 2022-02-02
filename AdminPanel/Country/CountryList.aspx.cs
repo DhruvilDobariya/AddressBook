@@ -24,7 +24,5 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
         gvCountry.DataSource = sdr;
         gvCountry.DataBind();
         conn.Close();
-
-
     }
 }

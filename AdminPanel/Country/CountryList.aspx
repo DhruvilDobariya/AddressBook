@@ -18,7 +18,27 @@
                 </asp:HyperLink>
             </div>
         </div>
-        <asp:GridView ID="gvCountry" runat="server" CssClass="table table-striped table-hover"></asp:GridView>
+        <asp:GridView ID="gvCountry" runat="server" AutoGenerateColumns="false">
+            <Columns>
+                <asp:BoundField DataField="CountryID" HeaderText="Id"/>
+                <asp:BoundField DataField="CountryName" HeaderText="Name"/>
+                <asp:BoundField DataField="CreationDate" HeaderText="Creation Date"/>
+                <asp:TemplateField HeaderText="Delete">
+                    <ItemTemplate>
+                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Edit">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
+                            <i class="fas fa-edit"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
     </div>
 </asp:Content>
 
