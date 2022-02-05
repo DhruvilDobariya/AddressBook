@@ -20,18 +20,35 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
             lblMsg.Text = "Please enter a Contact Category";
             return;
         }
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand();
-        sc.Connection = conn;
-        sc.CommandType = CommandType.StoredProcedure;
-        sc.CommandText = "PR_ContactCategory_Insert";
-        sc.Parameters.AddWithValue("@ContactCategoryName", Convert.ToString(txtContactCategory.Text.Trim()));
-        sc.ExecuteNonQuery();
-        conn.Close();
 
-        lblMsg.Text = "Contact Category Added Successfully";
-        txtContactCategory.Text = "";
-        txtContactCategory.Focus();
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand();
+            objCmd.Connection = objConn;
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.CommandText = "PR_ContactCategory_Insert";
+            objCmd.Parameters.AddWithValue("@ContactCategoryName", Convert.ToString(txtContactCategory.Text.Trim()));
+            objCmd.ExecuteNonQuery();
+            objConn.Close();
+
+            lblMsg.Text = "Contact Category Added Successfully";
+            txtContactCategory.Text = "";
+            txtContactCategory.Focus();
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
 }

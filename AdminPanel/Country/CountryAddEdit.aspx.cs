@@ -36,19 +36,35 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
             return;
         }
 
-        SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
-        conn.Open();
-        SqlCommand sc = new SqlCommand();
-        sc.Connection = conn;
-        sc.CommandType = CommandType.StoredProcedure;
-        sc.CommandText = "PR_Country_Insert";
-        sc.Parameters.AddWithValue("@CountryName", CountryName);
-        sc.Parameters.AddWithValue("@CountryCode", CountryCode);
-        sc.ExecuteNonQuery();
-        conn.Close();
-        lblMsg.Text = "Country Added Successfully";
-        txtCountry.Text = "";
-        txtCode.Text = "";
-        txtCountry.Focus();
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand();
+            objCmd.Connection = objConn;
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.CommandText = "PR_Country_Insert";
+            objCmd.Parameters.AddWithValue("@CountryName", CountryName);
+            objCmd.Parameters.AddWithValue("@CountryCode", CountryCode);
+            objCmd.ExecuteNonQuery();
+            objConn.Close();
+            lblMsg.Text = "Country Added Successfully";
+            txtCountry.Text = "";
+            txtCode.Text = "";
+            txtCountry.Focus();
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
 }

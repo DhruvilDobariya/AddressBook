@@ -11,7 +11,10 @@
                     Country
                 </h2>
             </div>
-            <div class="col-md-8 d-flex justify-content-end p-2">
+            <div class="col-md-4 d-flex justify-content-center">
+                <asp:Label ID="lblMsg" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-4 d-flex justify-content-end p-2">
                 <asp:HyperLink runat="server" ID="btnAddCountry" NavigateUrl="~/AdminPanel/Country/CountryAddEdit.aspx" CssClass="btn btn-danger" >
                     <i class="fas fa-plus"></i>
                     Add Country

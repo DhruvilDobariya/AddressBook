@@ -22,74 +22,135 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     }
     private void FillContactCategoryForDropDown()
     {
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand("PR_ContactCategory_SelectForDropDownList", conn);
-        sc.CommandType = CommandType.StoredProcedure;
-        SqlDataReader sdr = sc.ExecuteReader();
-        if (sdr.HasRows)
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+
+        try
         {
-            ddContactCategory.DataSource = sdr;
-            ddContactCategory.DataValueField = "ContactCategoryID";
-            ddContactCategory.DataTextField = "ContactCategoryName";
-            ddContactCategory.DataBind();
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand("PR_ContactCategory_SelectForDropDownList", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+            if (objSDR.HasRows)
+            {
+                ddContactCategory.DataSource = objSDR;
+                ddContactCategory.DataValueField = "ContactCategoryID";
+                ddContactCategory.DataTextField = "ContactCategoryName";
+                ddContactCategory.DataBind();
+            }
+            objConn.Close();
+            ddContactCategory.Items.Insert(0, new ListItem("Select Contact Category", "-1"));
         }
-        conn.Close();
-        ddContactCategory.Items.Insert(0, new ListItem("Select Contact Category", "-1"));
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
     private void FillCityForDropDown()
     {
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand("PR_City_SelectForDropDownList", conn);
-        sc.CommandType = CommandType.StoredProcedure;
-        SqlDataReader sdr = sc.ExecuteReader();
-        if (sdr.HasRows)
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        try
         {
-            ddCity.DataSource = sdr;
-            ddCity.DataValueField = "CityID";
-            ddCity.DataTextField = "CityName";
-            ddCity.DataBind();
-        }
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
 
-        conn.Close();
-        ddCity.Items.Insert(0, new ListItem("Select City", "-1"));
+            SqlCommand objCmd = new SqlCommand("PR_City_SelectForDropDownList", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+            if (objSDR.HasRows)
+            {
+                ddCity.DataSource = objSDR;
+                ddCity.DataValueField = "CityID";
+                ddCity.DataTextField = "CityName";
+                ddCity.DataBind();
+            }
+
+            objConn.Close();
+            ddCity.Items.Insert(0, new ListItem("Select City", "-1"));
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
     private void FillStateForDropDown()
     {
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand("PR_State_SelectForDropDownList", conn);
-        sc.CommandType = CommandType.StoredProcedure;
-        SqlDataReader sdr = sc.ExecuteReader();
-        if (sdr.HasRows)
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        try
         {
-            ddState.DataSource = sdr;
-            ddState.DataValueField = "StateID";
-            ddState.DataTextField = "StateName";
-            ddState.DataBind();
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand("PR_State_SelectForDropDownList", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+            if (objSDR.HasRows)
+            {
+                ddState.DataSource = objSDR;
+                ddState.DataValueField = "StateID";
+                ddState.DataTextField = "StateName";
+                ddState.DataBind();
+            }
+            objConn.Close();
+            ddState.Items.Insert(0, new ListItem("Select State", "-1"));
         }
-        conn.Close();
-        ddState.Items.Insert(0, new ListItem("Select State", "-1"));
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
     private void FillCountryDropDown()
     {
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand("PR_Country_SelectForDropDownList", conn);
-        sc.CommandType = CommandType.StoredProcedure;
-        SqlDataReader sdr = sc.ExecuteReader();
-
-        if (sdr.HasRows)
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        try
         {
-            ddCountry.DataSource = sdr;
-            ddCountry.DataValueField = "CountryID";
-            ddCountry.DataTextField = "CountryName";
-            ddCountry.DataBind();
-        }
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
 
-        conn.Close();
-        ddCountry.Items.Insert(0, new ListItem("Select Country", "-1"));
+            SqlCommand objCmd = new SqlCommand("PR_Country_SelectForDropDownList", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+
+            if (objSDR.HasRows)
+            {
+                ddCountry.DataSource = objSDR;
+                ddCountry.DataValueField = "CountryID";
+                ddCountry.DataTextField = "CountryName";
+                ddCountry.DataBind();
+            }
+
+            objConn.Close();
+            ddCountry.Items.Insert(0, new ListItem("Select Country", "-1"));
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
@@ -112,29 +173,44 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             lblMsg.Text = "Please enter full or valid detail";
             return;
         }
-        SqlConnection conn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
-        conn.Open();
-        SqlCommand sc = new SqlCommand("PR_Contact_Insert", conn);
-        sc.CommandType = CommandType.StoredProcedure;
-        sc.Parameters.AddWithValue("@ContactName", Convert.ToString(txtContact.Text.Trim()));
-        sc.Parameters.AddWithValue("@ContactCategoryID", Convert.ToInt32(ddContactCategory.SelectedValue));
-        sc.Parameters.AddWithValue("@CityID", Convert.ToInt32(ddCity.SelectedValue));
-        sc.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
-        sc.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
-        sc.Parameters.AddWithValue("@ContactNo", Convert.ToString(txtContactNo.Text.Trim()));
-        sc.Parameters.AddWithValue("@WhatsappNo", WhatsappNo);
-        sc.Parameters.AddWithValue("@BirthDate", BirthDate);
-        sc.Parameters.AddWithValue("@Email", Convert.ToString(txtEmail.Text.Trim()));
-        sc.Parameters.AddWithValue("@Age", Convert.ToInt32(txtAge.Text.Trim()));
-        sc.Parameters.AddWithValue("@BloodGroup", BloodGroup);
-        sc.Parameters.AddWithValue("@FacebookID", Facebook);
-        sc.Parameters.AddWithValue("@LinkedInID", Linkedin);
-        sc.Parameters.AddWithValue("@Address", Address);
-        sc.ExecuteNonQuery();
-        conn.Close();
+        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
 
-        txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = tbAddress.Text = "";
-        ddContactCategory.SelectedValue = ddCity.SelectedValue = ddState.SelectedValue = ddCountry.SelectedValue = "-1";
-        lblMsg.Text = "Contact Added Successfully";
+            SqlCommand objCmd = new SqlCommand("PR_Contact_Insert", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.Parameters.AddWithValue("@ContactName", Convert.ToString(txtContact.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@ContactCategoryID", Convert.ToInt32(ddContactCategory.SelectedValue));
+            objCmd.Parameters.AddWithValue("@CityID", Convert.ToInt32(ddCity.SelectedValue));
+            objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
+            objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
+            objCmd.Parameters.AddWithValue("@ContactNo", Convert.ToString(txtContactNo.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@WhatsappNo", WhatsappNo);
+            objCmd.Parameters.AddWithValue("@BirthDate", BirthDate);
+            objCmd.Parameters.AddWithValue("@Email", Convert.ToString(txtEmail.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@Age", Convert.ToInt32(txtAge.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@BloodGroup", BloodGroup);
+            objCmd.Parameters.AddWithValue("@FacebookID", Facebook);
+            objCmd.Parameters.AddWithValue("@LinkedInID", Linkedin);
+            objCmd.Parameters.AddWithValue("@Address", Address);
+            objCmd.ExecuteNonQuery();
+            objConn.Close();
+
+            txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = tbAddress.Text = "";
+            ddContactCategory.SelectedValue = ddCity.SelectedValue = ddState.SelectedValue = ddCountry.SelectedValue = "-1";
+            lblMsg.Text = "Contact Added Successfully";
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
+        
     }
 }

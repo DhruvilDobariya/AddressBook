@@ -11,13 +11,16 @@
                     Contact
                 </h2>
             </div>
-            <div class="col-md-8 d-flex justify-content-end p-2">
+            <div class="col-md-4 d-flex justify-content-center">
+                <asp:Label ID="lblMsg" runat="server"></asp:Label>
+            </div>
+            <div class="col-md-4 d-flex justify-content-end p-2">
                 <asp:HyperLink runat="server" ID="btnAddCountry" NavigateUrl="~/AdminPanel/Contact/ContactAddEdit.aspx" CssClass="btn btn-danger">
                     <i class="fas fa-plus"></i>
                     Add Contact
                 </asp:HyperLink>
             </div>
         </div>
-        <asp:GridView ID="gvContact" runat="server" CssClass="table table-striped table-hover table-responsive"></asp:GridView>
+        <asp:GridView ID="gvContact" runat="server" CssClass="" RowStyle-Wrap="false"></asp:GridView>
     </div>
 </asp:Content>

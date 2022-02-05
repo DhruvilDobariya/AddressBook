@@ -7,7 +7,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" 
+    content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
     <title></title>
 
     <link rel="icon" type="image/x-icon" href="~/Content/image/favicon.png">
@@ -18,7 +19,7 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="">
+        <div class="sticky-top">
             <nav class="navbar navbar-expand-lg navbar-dark header ps-5">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">
@@ -64,6 +65,17 @@
         <div class="">
             <asp:ContentPlaceHolder ID="cphContent" runat="server">
             </asp:ContentPlaceHolder>
+        </div>
+        <div class="row header2 text-light p-3 mt-5">
+            <p class="text-center m-0">Dhruvil A. Dobariya | 190540107051 | 190540107051@darshan.ac.in</p>
+            <p class="text-center m-0">
+                <asp:HyperLink runat="server" ID="hlLinkedin" CssClass="btn btn-lg text-light" NavigateUrl="https://www.linkedin.com/in/dhruvil-dobariya-240600209/">
+                    <i class="fab fa-linkedin"></i>
+                </asp:HyperLink>
+                <asp:HyperLink runat="server" ID="HyperLink1" CssClass="btn btn-lg text-light" NavigateUrl="https://github.com/DhruvilDobariya">
+                    <i class="fab fa-github"></i>
+                </asp:HyperLink>
+            </p>
         </div>
     </form>
     <script src="/Content/js/bootstrap.bundle.min.js" type="text/javascript"></script>
