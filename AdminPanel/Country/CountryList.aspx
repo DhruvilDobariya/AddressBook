@@ -21,22 +21,22 @@
                 </asp:HyperLink>
             </div>
         </div>
-        <asp:GridView ID="gvCountry" runat="server" AutoGenerateColumns="false">
+        <asp:GridView ID="gvCountry" runat="server" AutoGenerateColumns="false" OnRowCommand="gvCountry_RowCommand">
             <Columns>
                 <asp:BoundField DataField="CountryID" HeaderText="Id"/>
                 <asp:BoundField DataField="CountryName" HeaderText="Name"/>
                 <asp:BoundField DataField="CreationDate" HeaderText="Creation Date"/>
-                <asp:TemplateField HeaderText="Delete">
-                    <ItemTemplate>
-                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i>
-                        </asp:LinkButton>
-                    </ItemTemplate>
-                </asp:TemplateField>
                 <asp:TemplateField HeaderText="Edit">
                     <ItemTemplate>
                         <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
                             <i class="fas fa-edit"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Delete">
+                    <ItemTemplate>
+                        <asp:LinkButton ID="btnDelete" runat="server" CssClass="btn btn-danger" CommandName="DeleteRecord" CommandArgument='<%# Eval("CountryID").ToString() %>'>
+                            <i class="fas fa-trash-alt"></i>
                         </asp:LinkButton>
                     </ItemTemplate>
                 </asp:TemplateField>

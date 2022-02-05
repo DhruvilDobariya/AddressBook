@@ -21,7 +21,29 @@
                 </asp:HyperLink>
             </div>
         </div>
-        <asp:GridView ID="gvCity" runat="server" CssClass="table table-striped table-hover"></asp:GridView>
+        <asp:GridView ID="gvCity" runat="server" CssClass="" AutoGenerateColumns="false" OnRowCommand="gvCity_RowCommand">
+            <Columns>
+                <asp:BoundField DataField="CityID" HeaderText="Id" />
+                <asp:BoundField DataField="CityName" HeaderText="Name" />
+                <asp:BoundField DataField="PinCode" HeaderText="Pin Code" />
+                <asp:BoundField DataField="STDCode" HeaderText="STD Code" />
+                <asp:BoundField DataField="CreationDate" HeaderText="Creation Date" />
+                <asp:TemplateField HeaderText="Edit">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
+                            <i class="fas fa-edit"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField HeaderText="Delete">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnDelete" CssClass="btn btn-danger" CommandName="DeleteRecord" CommandArgument='<%# Eval("CityID").ToString() %>'>
+                             <i class="fas fa-trash-alt"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
     </div>
 </asp:Content>
 

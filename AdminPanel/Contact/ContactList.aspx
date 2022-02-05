@@ -21,6 +21,39 @@
                 </asp:HyperLink>
             </div>
         </div>
-        <asp:GridView ID="gvContact" runat="server" CssClass="" RowStyle-Wrap="false"></asp:GridView>
+        <asp:GridView ID="gvContact" runat="server" CssClass="" RowStyle-Wrap="false" AutoGenerateColumns="false" OnRowCommand="gvContact_RowCommand">
+            <Columns>
+                <asp:BoundField DataField="ContactId" HeaderText="Id"/>
+                <asp:BoundField DataField="ContactName" HeaderText="Name"/>
+                <asp:BoundField DataField="ContactCategoryName" HeaderText="Contact Category"/>
+                <asp:BoundField DataField="CityName" HeaderText="City Name"/>
+                <asp:BoundField DataField="StateName" HeaderText="State Name"/>
+                <asp:BoundField DataField="CountryName" HeaderText="Country Name"/>
+                <asp:BoundField DataField="ContactNo" HeaderText="Contact No"/>
+                <asp:BoundField DataField="WhatsappNo" HeaderText="Whatsapp No"/>
+                <asp:BoundField DataField="BirthDate" HeaderText="Birth Date"/>
+                <asp:BoundField DataField="Email" HeaderText="Email Id"/>
+                <asp:BoundField DataField="Age" HeaderText="Age"/>
+                <asp:BoundField DataField="BloodGroup" HeaderText="Blood Group"/>
+                <asp:BoundField DataField="FacebookID" HeaderText="Facebook Id"/>
+                <asp:BoundField DataField="LinkedinID" HeaderText="Linkedin Id"/>
+                <asp:BoundField DataField="Address" HeaderText="Address"/>
+                <asp:BoundField DataField="CreationDate" HeaderText="Creation Date"/>
+                <asp:TemplateField HeaderText="Edit">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
+                            <i class="fas fa-edit"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                 <asp:TemplateField HeaderText="Delete">
+                    <ItemTemplate>
+                        <asp:LinkButton runat="server" ID="btnDelete" CssClass="btn btn-danger" CommandName="DeleteRecord" CommandArgument='<%# Eval("ContactID").ToString() %>'>
+                             <i class="fas fa-trash-alt"></i>
+                        </asp:LinkButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
     </div>
 </asp:Content>
