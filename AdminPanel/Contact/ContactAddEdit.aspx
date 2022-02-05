@@ -5,7 +5,9 @@
 <asp:Content ID="cContant" ContentPlaceHolderID="cphContent" runat="Server">
     <div class="container my-5 border p-4">
         <div>
-            <h2>Add Contact</h2>
+            <h2>
+                <asp:Label runat="server" ID="lblTitle">Add Contact</asp:Label>
+            </h2>
         </div>
         <div class="mt-3">
             <form>
@@ -53,7 +55,8 @@
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label class="form-lable m-1">Enter Birth Date</label>
-                        <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control m-1" TextMode="Date"></asp:TextBox>
+                        <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control m-1"></asp:TextBox>
+                        <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate" Display="Dynamic" ErrorMessage="Enter valid Date of Birth" ForeColor="Red" Operator="DataTypeCheck" Type="Date"></asp:CompareValidator>
                     </div>
                     <div class="col-md-6">
                         <label class="form-lable m-1">Enter Email</label>

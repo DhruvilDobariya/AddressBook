@@ -5,7 +5,9 @@
 <asp:Content ID="cContant" ContentPlaceHolderID="cphContent" runat="Server">
     <div class="container mt-5 border p-4">
         <div>
-            <h2>Add Country</h2>
+            <h2>
+                <asp:Label runat="server" ID="lblTitle">Add Country</asp:Label>
+            </h2>
         </div>
         <div class="mt-3">
             <form>

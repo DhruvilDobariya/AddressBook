@@ -25,12 +25,14 @@
             <Columns>
                 <asp:BoundField DataField="StateID" HeaderText="Id"/>
                 <asp:BoundField DataField="StateName" HeaderText="Name"/>
+                <asp:BoundField DataField="StateCode" HeaderText="Code"/>
+                <asp:BoundField DataField="CountryName" HeaderText="Country"/>
                 <asp:BoundField DataField="CreationDate" HeaderText="Creation Date"/>
                 <asp:TemplateField HeaderText="Edit">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
+                        <asp:HyperLink runat="server" ID="hyEdit" NavigateUrl='<%# "~/AdminPanel/State/StateAddEdit.aspx?StateID=" + Eval("StateID").ToString().Trim() %>' CssClass="btn btn-gradient">
                             <i class="fas fa-edit"></i>
-                        </asp:LinkButton>
+                        </asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                  <asp:TemplateField HeaderText="Delete">

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,6 +16,12 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
             FillCountryDropDown();
+            if(Request.QueryString["StateID"] != null)
+            {
+                lblTitle.Text = "Edit State";
+                btnSubmit.Text = "Edit";
+                FillControlls(Convert.ToInt32(Request.QueryString["StateID"]));
+            }
         }
     }
     private void FillCountryDropDown()
@@ -65,18 +73,31 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
-            SqlCommand objCmd = new SqlCommand("PR_State_Insert", objConn);
+            SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@StateName", Convert.ToString(txtState.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@StateCode", Convert.ToString(txtState.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@StateCode", Convert.ToString(txtCode.Text.Trim()));
             objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
-            objCmd.ExecuteNonQuery();
+
+            if (Request.QueryString["StateID"] != null) 
+            {
+                objCmd.CommandText = "PR_State_UpdateByPK";
+                objCmd.Parameters.AddWithValue("@StateID", Convert.ToString(Request.QueryString["StateID"]));
+                objCmd.ExecuteNonQuery();
+                Response.Redirect("~/AdminPanel/State/StateList.aspx");
+            }
+            else
+            {
+                objCmd.CommandText = "PR_State_Insert";
+                objCmd.ExecuteNonQuery();
+                lblMsg.Text = "State Added Successfully";
+                txtState.Text = txtCode.Text = "";
+                ddCountry.SelectedIndex = -1;
+                txtState.Focus();
+            }
+           
             objConn.Close();
 
-            lblMsg.Text = "State Added Successfully";
-            txtState.Text = txtCode.Text = "";
-            ddCountry.SelectedIndex = -1;
-            txtState.Focus();
         }
         catch (Exception ex)
         {
@@ -88,5 +109,53 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
         
+    }
+    private void FillControlls(SqlInt32 Id)
+    {
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand("PR_State_SelectByPK", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.Parameters.AddWithValue("@StateID", Id);
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+
+            if (objSDR.HasRows)
+            {
+                while (objSDR.Read())
+                {
+                    if (!objSDR["StateName"].Equals(DBNull.Value))
+                    {
+                        txtState.Text = objSDR["StateName"].ToString();
+                    }
+                    if (!objSDR["StateCode"].Equals(DBNull.Value))
+                    {
+                        txtCode.Text = objSDR["StateCode"].ToString();
+                    }
+                    if (!objSDR["CountryID"].Equals(DBNull.Value))
+                    {
+                        ddCountry.SelectedValue = objSDR["CountryID"].ToString();
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                lblMsg.Text = "State Not Found!";
+            }
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
     }
 }

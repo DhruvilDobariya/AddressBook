@@ -41,9 +41,9 @@
                 <asp:BoundField DataField="CreationDate" HeaderText="Creation Date"/>
                 <asp:TemplateField HeaderText="Edit">
                     <ItemTemplate>
-                        <asp:LinkButton runat="server" ID="btnEdit" CssClass="btn btn-gradient">
+                        <asp:HyperLink runat="server" ID="hlEdit" NavigateUrl='<%# "~/AdminPanel/Contact/ContactAddEdit.aspx?ContactID=" + Eval("ContactID").ToString().Trim() %>' CssClass="btn btn-gradient">
                             <i class="fas fa-edit"></i>
-                        </asp:LinkButton>
+                        </asp:HyperLink>
                     </ItemTemplate>
                 </asp:TemplateField>
                  <asp:TemplateField HeaderText="Delete">

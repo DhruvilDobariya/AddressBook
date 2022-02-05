@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -18,6 +19,12 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             FillCityForDropDown();
             FillStateForDropDown();
             FillCountryDropDown();
+            if(Request.QueryString["ContactID"] != null)
+            {
+                lblTitle.Text = "Edit Contact";
+                btnSubmit.Text = "Edit";
+                FillControlls(Convert.ToInt32(Request.QueryString["ContactID"]));
+            }
         }
     }
     private void FillContactCategoryForDropDown()
@@ -179,7 +186,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
-            SqlCommand objCmd = new SqlCommand("PR_Contact_Insert", objConn);
+            SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactName", Convert.ToString(txtContact.Text.Trim()));
             objCmd.Parameters.AddWithValue("@ContactCategoryID", Convert.ToInt32(ddContactCategory.SelectedValue));
@@ -195,12 +202,25 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             objCmd.Parameters.AddWithValue("@FacebookID", Facebook);
             objCmd.Parameters.AddWithValue("@LinkedInID", Linkedin);
             objCmd.Parameters.AddWithValue("@Address", Address);
-            objCmd.ExecuteNonQuery();
-            objConn.Close();
 
-            txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = tbAddress.Text = "";
-            ddContactCategory.SelectedValue = ddCity.SelectedValue = ddState.SelectedValue = ddCountry.SelectedValue = "-1";
-            lblMsg.Text = "Contact Added Successfully";
+            if (Request.QueryString["ContactID"] != null)
+            {
+                objCmd.CommandText = "PR_Contact_UpdateByPK";
+                objCmd.Parameters.AddWithValue("@ContactID", Convert.ToString(Request.QueryString["ContactID"]));
+                objCmd.ExecuteNonQuery();
+                Response.Redirect("~/AdminPanel/Contact/ContactList.aspx");
+            }
+            else
+            {
+                objCmd.CommandText = "PR_Contact_Insert";
+                objCmd.ExecuteNonQuery();
+                txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = tbAddress.Text = "";
+                ddContactCategory.SelectedValue = ddCity.SelectedValue = ddState.SelectedValue = ddCountry.SelectedValue = "-1";
+                lblMsg.Text = "Contact Added Successfully";
+            }
+
+            objConn.Close();
+            
         }
         catch (Exception ex)
         {
@@ -211,6 +231,98 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             if (objConn.State == ConnectionState.Open)
                 objConn.Close();
         }
-        
+    }
+    private void FillControlls(SqlInt32 Id)
+    {
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand("PR_Contact_SelectByPK", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.Parameters.AddWithValue("@ContactID", Id);
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+
+            if (objSDR.HasRows)
+            {
+                while (objSDR.Read())
+                {
+                    if (!objSDR["ContactName"].Equals(DBNull.Value))
+                    {
+                        txtContact.Text = objSDR["ContactName"].ToString();
+                    }
+                    if (!objSDR["ContactCategoryID"].Equals(DBNull.Value))
+                    {
+                        ddContactCategory.SelectedValue = objSDR["ContactCategoryID"].ToString();
+                    }
+                    if (!objSDR["CityID"].Equals(DBNull.Value))
+                    {
+                        ddCity.SelectedValue = objSDR["CityID"].ToString();
+                    }
+                    if (!objSDR["StateID"].Equals(DBNull.Value))
+                    {
+                        ddState.SelectedValue = objSDR["StateID"].ToString();
+                    }
+                    if (!objSDR["CountryID"].Equals(DBNull.Value))
+                    {
+                        ddCountry.SelectedValue = objSDR["CountryID"].ToString();
+                    }
+                    if (!objSDR["ContactNo"].Equals(DBNull.Value))
+                    {
+                        txtContactNo.Text = objSDR["ContactNo"].ToString();
+                    }
+                    if (!objSDR["WhatsappNo"].Equals(DBNull.Value))
+                    {
+                        txtWhatsappNo.Text = objSDR["WhatsappNo"].ToString();
+                    }
+                    if (!objSDR["BirthDate"].Equals(DBNull.Value))
+                    {
+                        DateTime bd = Convert.ToDateTime(objSDR["BirthDate"].ToString());
+                        txtBirthDate.Text = bd.ToShortDateString();
+                    }
+                    if (!objSDR["Email"].Equals(DBNull.Value))
+                    {
+                        txtEmail.Text = objSDR["Email"].ToString();
+                    }
+                    if (!objSDR["Age"].Equals(DBNull.Value))
+                    {
+                        txtAge.Text = objSDR["Age"].ToString();
+                    }
+                    if (!objSDR["BloodGroup"].Equals(DBNull.Value))
+                    {
+                        txtBloodGroup.Text = objSDR["BloodGroup"].ToString();
+                    }
+                    if (!objSDR["FacebookID"].Equals(DBNull.Value))
+                    {
+                        txtFecebook.Text = objSDR["FacebookID"].ToString();
+                    }
+                    if (!objSDR["LinkedinID"].Equals(DBNull.Value))
+                    {
+                        txtLinkedin.Text = objSDR["LinkedinID"].ToString();
+                    }
+                    if (!objSDR["Address"].Equals(DBNull.Value))
+                    {
+                        tbAddress.Text = objSDR["Address"].ToString();
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                lblMsg.Text = "Contact Not Found!";
+            }
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
     }
 }

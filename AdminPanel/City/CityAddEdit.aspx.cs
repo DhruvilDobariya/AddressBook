@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -14,6 +16,12 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
         if (!Page.IsPostBack)
         {
             FillStateForDropDown();
+            if(Request.QueryString["CityID"] != null)
+            {
+                lblTitle.Text = "Edit City";
+                btnSubmit.Text = "Edit";
+                FillControlls(Convert.ToInt32(Request.QueryString["CityID"]));
+            }
         }
     }
     private void FillStateForDropDown()
@@ -61,18 +69,31 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
-            SqlCommand objCmd = new SqlCommand("PR_City_Insert", objConn);
+            SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@CityName", Convert.ToString(txtCity.Text.Trim()));
             objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
             objCmd.Parameters.AddWithValue("@PinCode", Convert.ToString(txtPin.Text.Trim()));
             objCmd.Parameters.AddWithValue("@STDCode", Convert.ToString(txtSTD.Text.Trim()));
-            objCmd.ExecuteNonQuery();
+
+            if (Request.QueryString["CityID"] != null)
+            {
+                objCmd.CommandText = "PR_City_UpdateByPK";
+                objCmd.Parameters.AddWithValue("@CityID", Convert.ToString(Request.QueryString["CityID"]));
+                objCmd.ExecuteNonQuery();
+                Response.Redirect("~/AdminPanel/City/CityList.aspx");
+            }
+            else
+            {
+                objCmd.CommandText = "PR_City_Insert";
+                objCmd.ExecuteNonQuery();
+                lblMsg.Text = "City Added Successfully";
+                txtCity.Text = txtPin.Text = txtSTD.Text = "";
+                ddState.SelectedIndex = -1;
+            }
+
             objConn.Close();
 
-            lblMsg.Text = "City Added Successfully";
-            txtCity.Text = txtPin.Text = txtSTD.Text = "";
-            ddState.SelectedIndex = -1;
         }
         catch (Exception ex)
         {
@@ -84,5 +105,57 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
         
+    }
+    private void FillControlls(SqlInt32 Id)
+    {
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+
+        try
+        {
+            if (objConn.State != ConnectionState.Open)
+                objConn.Open();
+
+            SqlCommand objCmd = new SqlCommand("PR_City_SelectByPK", objConn);
+            objCmd.CommandType = CommandType.StoredProcedure;
+            objCmd.Parameters.AddWithValue("@CityID", Id);
+            SqlDataReader objSDR = objCmd.ExecuteReader();
+
+            if (objSDR.HasRows)
+            {
+                while (objSDR.Read())
+                {
+                    if (!objSDR["CityName"].Equals(DBNull.Value))
+                    {
+                        txtCity.Text = objSDR["CityName"].ToString();
+                    }
+                    if (!objSDR["STDCode"].Equals(DBNull.Value))
+                    {
+                        txtSTD.Text = objSDR["STDCode"].ToString();
+                    }
+                    if (!objSDR["PinCode"].Equals(DBNull.Value))
+                    {
+                        txtPin.Text = objSDR["PinCode"].ToString();
+                    }
+                    if (!objSDR["StateID"].Equals(DBNull.Value))
+                    {
+                        ddState.SelectedValue = objSDR["StateID"].ToString();
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                lblMsg.Text = "City Not Found!";
+            }
+        }
+        catch (Exception ex)
+        {
+            lblMsg.Text = ex.Message;
+        }
+        finally
+        {
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+        }
     }
 }
