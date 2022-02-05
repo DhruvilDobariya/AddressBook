@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.Web.UI.Page
 {
+    #region Page Load
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -23,6 +24,8 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
             }
         }
     }
+    #endregion Page Lode
+    #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         if(txtContactCategory.Text.Trim() == "")
@@ -74,6 +77,8 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
         }
         
     }
+    #endregion Submit Foem
+    #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -114,4 +119,5 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
                 objConn.Close();
         }
     }
+    #endregion Fill Controlls
 }

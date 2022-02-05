@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
 {
+    #region PageLode
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -23,6 +24,8 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
             }
         }
     }
+    #endregion PageLode
+    #region SubmimForm
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         SqlString CountryName = txtCountry.Text.Trim();
@@ -89,7 +92,8 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
         }
         
     }
-
+    #endregion SubmitForm
+    #region FillControlls
     private void FillControlls(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -134,4 +138,5 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion FillControlls
 }

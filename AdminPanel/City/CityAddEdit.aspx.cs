@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
 {
+    #region Page Load
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -24,6 +25,8 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             }
         }
     }
+    #endregion Page Load
+    #region Fill State
     private void FillStateForDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -56,6 +59,8 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion Fill State
+    #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         if(txtCity.Text.Trim() == "" || ddState.SelectedIndex == -1)
@@ -104,8 +109,9 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             if (objConn.State == ConnectionState.Open)
                 objConn.Close();
         }
-        
     }
+    #endregion Submit Form
+    #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -158,4 +164,5 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion Fill Controlls
 }

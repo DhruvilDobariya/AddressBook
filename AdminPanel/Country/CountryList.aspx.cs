@@ -11,29 +11,16 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_Country_Read : System.Web.UI.Page
 {
+    #region PageLode
     protected void Page_Load(object sender, EventArgs e)
     {
-        /*try
-       {
-           if (objConn.State != ConnectionState.Open)
-               objConn.Open();
-       }
-       catch(Exception ex)
-       {
-           lblMsg.Text = ex.Message;
-       }
-       finally
-       {
-           if (objConn.State == ConnectionState.Open)
-               objConn.Close();
-       }*/
-
         if (!Page.IsPostBack)
         {
             FillCountry();
         }
     }
-
+    #endregion PageLode
+    #region FillCountry
     private void FillCountry()
     {
         SqlConnection objConn = new SqlConnection();
@@ -63,7 +50,8 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
                 objConn.Close();
         }
     }
-
+    #endregion FillCountry
+    #region GridViewRowCommand
     protected void gvCountry_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if(e.CommandName == "DeleteRecord")
@@ -75,7 +63,8 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
             }
         }
     }
-
+    #endregion GridViewRowCommand
+    #region DeleteCountry
     private void DeleteCountry(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -100,4 +89,5 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion DeleteCountry
 }

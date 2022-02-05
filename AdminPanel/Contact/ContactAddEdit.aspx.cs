@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
 {
+    #region Page Load
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -27,6 +28,8 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             }
         }
     }
+    #endregion Page Load
+    #region Fill Contact Category DropDown
     private void FillContactCategoryForDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -60,6 +63,8 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion Fill Contact Category DropDown
+    #region Fill City DropDown
     private void FillCityForDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -93,6 +98,8 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion Fill City DropDown
+    #region Fill State DropDown
     private void FillStateForDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -123,8 +130,9 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             if (objConn.State == ConnectionState.Open)
                 objConn.Close();
         }
-        
     }
+    #endregion Fill State DropDown
+    #region Fill Country DropDown
     private void FillCountryDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -159,6 +167,8 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion Fill Country DropDown
+    #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         SqlString WhatsappNo = SqlString.Null;
@@ -232,6 +242,8 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion Submit Form
+    #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -325,4 +337,5 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion Fill Controlls 
 }

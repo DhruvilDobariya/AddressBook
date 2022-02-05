@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
 {
+    #region PageLode
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -24,6 +25,8 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
             }
         }
     }
+    #endregion PageLode
+    #region FillCountryDropDown
     private void FillCountryDropDown()
     {
         SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
@@ -59,6 +62,8 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion FillCountryDropDown
+    #region SubmitForm
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "" || ddCountry.SelectedIndex == -1)
@@ -110,6 +115,8 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
         }
         
     }
+    #endregion SubmitForm
+    #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -158,4 +165,5 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion Fill Controlls
 }

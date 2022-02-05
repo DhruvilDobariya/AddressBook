@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_City_CityList : System.Web.UI.Page
 {
+    #region Page Load
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -18,7 +19,8 @@ public partial class AdminPanel_City_CityList : System.Web.UI.Page
             FillCity();
         }
     }
-
+    #endregion Page Load
+    #region Fill City
     private void FillCity()
     {
         SqlConnection objConn = new SqlConnection();
@@ -48,7 +50,8 @@ public partial class AdminPanel_City_CityList : System.Web.UI.Page
                 objConn.Close();
         }
     }
-
+    #endregion FillCity
+    #region GridView RowCommand
     protected void gvCity_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if (e.CommandName == "DeleteRecord")
@@ -60,7 +63,8 @@ public partial class AdminPanel_City_CityList : System.Web.UI.Page
             }
         }
     }
-
+    #endregion GridView RowCommand
+    #region Delete City
     private void DeleteCity(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -87,4 +91,5 @@ public partial class AdminPanel_City_CityList : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion Delete City
 }

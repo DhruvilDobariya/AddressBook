@@ -11,6 +11,7 @@ using System.Web.UI.WebControls;
 
 public partial class AdminPanel_State_StateList : System.Web.UI.Page
 {
+    #region PageLode
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!Page.IsPostBack)
@@ -18,7 +19,8 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
             FillState();
         }
     }
-
+    #endregion PageLode
+    #region FillState
     private void FillState()
     {
         SqlConnection objConn = new SqlConnection();
@@ -48,9 +50,8 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
                 objConn.Close();
         }
     }
-
-
-
+    #endregion FillState 
+    #region GridViewRowCommand
     protected void gvState_RowCommand(object sender, GridViewCommandEventArgs e)
     {
         if(e.CommandName == "DeleteRecord")
@@ -62,7 +63,8 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
             }
         }
     }
-
+    #endregion GridViewRowCommand
+    #region DeleteState
     private void DeleteState(SqlInt32 Id)
     {
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -89,4 +91,5 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
                 objConn.Close();
         }
     }
+    #endregion DeleteState
 }
