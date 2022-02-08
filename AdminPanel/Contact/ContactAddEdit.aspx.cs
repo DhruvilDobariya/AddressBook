@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -32,13 +33,16 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Fill Contact Category DropDown
     private void FillContactCategoryForDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand("PR_ContactCategory_SelectForDropDownList", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader objSDR = objCmd.ExecuteReader();
@@ -51,6 +55,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             }
             objConn.Close();
             ddContactCategory.Items.Insert(0, new ListItem("Select Contact Category", "-1"));
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -67,12 +72,16 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Fill City DropDown
     private void FillCityForDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
+
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand("PR_City_SelectForDropDownList", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader objSDR = objCmd.ExecuteReader();
@@ -86,6 +95,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
 
             objConn.Close();
             ddCity.Items.Insert(0, new ListItem("Select City", "-1"));
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -102,12 +112,16 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Fill State DropDown
     private void FillStateForDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
+
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand("PR_State_SelectForDropDownList", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader objSDR = objCmd.ExecuteReader();
@@ -120,6 +134,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             }
             objConn.Close();
             ddState.Items.Insert(0, new ListItem("Select State", "-1"));
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -135,12 +150,16 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Fill Country DropDown
     private void FillCountryDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
+
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand("PR_Country_SelectForDropDownList", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             SqlDataReader objSDR = objCmd.ExecuteReader();
@@ -155,6 +174,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
 
             objConn.Close();
             ddCountry.Items.Insert(0, new ListItem("Select Country", "-1"));
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -171,31 +191,62 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        SqlString WhatsappNo = SqlString.Null;
-        SqlString BirthDate = SqlString.Null;
-        SqlString BloodGroup = SqlString.Null;
-        SqlString Facebook = SqlString.Null;
-        SqlString Linkedin = SqlString.Null;
-        SqlString Address = SqlString.Null;
-
-        WhatsappNo = txtWhatsappNo.Text.Trim();
-        BirthDate = txtBirthDate.Text.Trim();
-        BloodGroup = txtBloodGroup.Text.Trim();
-        Facebook = txtFecebook.Text.Trim();
-        Linkedin = txtLinkedin.Text.Trim();
-        Address = tbAddress.Text.Trim();
-
-        if (txtContact.Text.Trim() == "" || txtContactNo.Text.Trim() == "" || txtEmail.Text.Trim() == "" || tbAddress.Text.Trim() == "" || ddContactCategory.SelectedIndex == 0 || ddCity.SelectedIndex == 0 || ddCountry.SelectedIndex == 0 || ddState.SelectedIndex == 0)
+        #region Local Variable
+        bool flag = false;
+        int i = 1;
+        string temp = "";
+        #endregion Local Variable
+        #region Server side validaton
+        
+        IDictionary<TextBox, Label> textBoxValidation = new Dictionary<TextBox, Label>()
         {
-            lblMsg.Text = "Please enter full or valid detail";
+            {txtContact, lblContact },
+            {txtContactNo, lblContactNo },
+            {txtEmail, lblEmail},
+            {txtAddress, lblAddress }
+        };
+        IDictionary<DropDownList, Label> dropDownListValidation = new Dictionary<DropDownList, Label>() 
+        {
+            {ddContactCategory, lblContactCategory },
+            {ddCity, lblCity },
+            {ddState, lblState },
+            {ddCountry, lblCountry }
+        };
+        
+        foreach(KeyValuePair<TextBox, Label> pair in textBoxValidation)
+        {   
+            if(pair.Key.Text == "")
+            {
+                flag = true;
+                temp += i + ") " + pair.Value.Text + "</br>"; 
+            }
+            i++;
+        }
+        foreach (KeyValuePair<DropDownList, Label> pair in dropDownListValidation)
+        {
+            if (pair.Key.SelectedValue == "-1")
+            {
+                flag = true;
+                temp += i + ") " + pair.Value.Text + "</br>";
+            }
+            i++;
+        }
+        if (flag)
+        {
+            lblMsg.Text = "</br> Please : </br>" + temp;
             return;
         }
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+
+        #endregion Server side validaton
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactName", Convert.ToString(txtContact.Text.Trim()));
@@ -204,37 +255,42 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
             objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
             objCmd.Parameters.AddWithValue("@ContactNo", Convert.ToString(txtContactNo.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@WhatsappNo", WhatsappNo);
-            objCmd.Parameters.AddWithValue("@BirthDate", BirthDate);
+            objCmd.Parameters.AddWithValue("@WhatsappNo", Convert.ToString(txtWhatsappNo.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@BirthDate", Convert.ToString(txtBirthDate.Text.Trim()));
             objCmd.Parameters.AddWithValue("@Email", Convert.ToString(txtEmail.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@Age", Convert.ToInt32(txtAge.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@BloodGroup", BloodGroup);
-            objCmd.Parameters.AddWithValue("@FacebookID", Facebook);
-            objCmd.Parameters.AddWithValue("@LinkedInID", Linkedin);
-            objCmd.Parameters.AddWithValue("@Address", Address);
+            objCmd.Parameters.AddWithValue("@Age", Convert.ToString(txtAge.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@BloodGroup", Convert.ToString(txtBloodGroup.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@FacebookID", Convert.ToString(txtFecebook.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@LinkedInID", Convert.ToString(txtLinkedin.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@Address", Convert.ToString(txtAddress.Text.Trim()));
+            #endregion Create Command and Set Parameters
+
 
             if (Request.QueryString["ContactID"] != null)
             {
+                #region Update record
                 objCmd.CommandText = "PR_Contact_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@ContactID", Convert.ToString(Request.QueryString["ContactID"]));
                 objCmd.ExecuteNonQuery();
                 Response.Redirect("~/AdminPanel/Contact/ContactList.aspx");
+                #endregion Update record
             }
             else
             {
+                #region Add record
                 objCmd.CommandText = "PR_Contact_Insert";
                 objCmd.ExecuteNonQuery();
-                txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = tbAddress.Text = "";
+                txtContact.Text = txtContactNo.Text = txtWhatsappNo.Text = txtBirthDate.Text = txtEmail.Text = txtAge.Text = txtBloodGroup.Text = txtFecebook.Text = txtLinkedin.Text = txtAddress.Text = "";
                 ddContactCategory.SelectedValue = ddCity.SelectedValue = ddState.SelectedValue = ddCountry.SelectedValue = "-1";
                 lblMsg.Text = "Contact Added Successfully";
+                #endregion Add record
             }
-
             objConn.Close();
             
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            lblMsg.Text = ex.Message + ex ;
         }
         finally
         {
@@ -246,18 +302,23 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_Contact_SelectByPK", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactID", Id);
             SqlDataReader objSDR = objCmd.ExecuteReader();
+            #endregion Create Command and Set Parameters
 
+            #region Get data and set data
             if (objSDR.HasRows)
             {
                 while (objSDR.Read())
@@ -317,7 +378,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                     }
                     if (!objSDR["Address"].Equals(DBNull.Value))
                     {
-                        tbAddress.Text = objSDR["Address"].ToString();
+                        txtAddress.Text = objSDR["Address"].ToString();
                     }
                     break;
                 }
@@ -326,6 +387,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             {
                 lblMsg.Text = "Contact Not Found!";
             }
+            #endregion Get data and set data
         }
         catch (Exception ex)
         {

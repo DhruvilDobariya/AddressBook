@@ -23,14 +23,15 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
     #region FillState
     private void FillState()
     {
-        SqlConnection objConn = new SqlConnection();
-        objConn.ConnectionString = "data source=ALEX; initial catalog=AddressBook; Integrated Security=True";
-
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand();
             objCmd.Connection = objConn;
             objCmd.CommandType = CommandType.StoredProcedure;
@@ -39,6 +40,7 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
             gvState.DataSource = objSDR;
             gvState.DataBind();
             objConn.Close();
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -67,21 +69,25 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
     #region DeleteState
     private void DeleteState(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_State_DeleteByPK",objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@StateID", Id);
             objCmd.ExecuteNonQuery();
             objConn.Close();
             lblMsg.Text = "State Deleted Successfully!";
+            #endregion Create Command and Set Parameters
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             lblMsg.Text = ex.Message;
         }

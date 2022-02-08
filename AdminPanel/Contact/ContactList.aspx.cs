@@ -23,13 +23,16 @@ public partial class AdminPanel_Contact_ContactList : System.Web.UI.Page
     #region Fill Contact
     private void FillContact()
     {
-        SqlConnection objConn = new SqlConnection();
-        objConn.ConnectionString = "data source=ALEX; initial catalog=AddressBook; Integrated Security=True";
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
+
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand();
             objCmd.Connection = objConn;
             objCmd.CommandType = CommandType.StoredProcedure;
@@ -38,6 +41,7 @@ public partial class AdminPanel_Contact_ContactList : System.Web.UI.Page
             gvContact.DataSource = objSDR;
             gvContact.DataBind();
             objConn.Close();
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -66,19 +70,23 @@ public partial class AdminPanel_Contact_ContactList : System.Web.UI.Page
     #region Delete Contact
     private void DeleteContact(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_Contact_DeleteByPK", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactID", Id);
             objCmd.ExecuteNonQuery();
             objConn.Close();
             lblMsg.Text = "Contact Deleted Successfully!";
+            #endregion Create Command and Set Parameters
         }
         catch (Exception ex)
         {

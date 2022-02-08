@@ -29,7 +29,9 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
     #region FillCountryDropDown
     private void FillCountryDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
@@ -66,41 +68,51 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
     #region SubmitForm
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        #region Server side validation
         if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "" || ddCountry.SelectedIndex == -1)
         {
             lblMsg.Text = "Please enter State Name and State Code and Select Country Name";
             return;
         }
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #endregion Server side validation
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@StateName", Convert.ToString(txtState.Text.Trim()));
             objCmd.Parameters.AddWithValue("@StateCode", Convert.ToString(txtCode.Text.Trim()));
             objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
+            #endregion Create Command and Set Parameters
 
             if (Request.QueryString["StateID"] != null) 
             {
+                #region Update record
                 objCmd.CommandText = "PR_State_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@StateID", Convert.ToString(Request.QueryString["StateID"]));
                 objCmd.ExecuteNonQuery();
                 Response.Redirect("~/AdminPanel/State/StateList.aspx");
+                #endregion Update record
             }
             else
             {
+                #region Add record
                 objCmd.CommandText = "PR_State_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "State Added Successfully";
                 txtState.Text = txtCode.Text = "";
                 ddCountry.SelectedIndex = -1;
                 txtState.Focus();
+                #endregion Add record
             }
-           
+
             objConn.Close();
 
         }

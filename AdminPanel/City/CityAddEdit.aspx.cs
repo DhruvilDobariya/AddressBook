@@ -29,7 +29,9 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
     #region Fill State
     private void FillStateForDropDown()
     {
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
@@ -63,38 +65,48 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
     #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        if(txtCity.Text.Trim() == "" || ddState.SelectedIndex == -1)
+        #region Server side validation
+        if (txtCity.Text.Trim() == "" || ddState.SelectedIndex == -1)
         {
             lblMsg.Text = "Enter Full and Valid Information";
             return;
         }
-        SqlConnection objConn = new SqlConnection("data source=ALEX; initial catalog=AddressBook; Integrated Security=True");
+        #endregion Server side validation
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@CityName", Convert.ToString(txtCity.Text.Trim()));
             objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
             objCmd.Parameters.AddWithValue("@PinCode", Convert.ToString(txtPin.Text.Trim()));
             objCmd.Parameters.AddWithValue("@STDCode", Convert.ToString(txtSTD.Text.Trim()));
+            #endregion Create Command and Set Parameters
 
             if (Request.QueryString["CityID"] != null)
             {
+                #region Update record
                 objCmd.CommandText = "PR_City_UpdateByPK";
                 objCmd.Parameters.AddWithValue("@CityID", Convert.ToString(Request.QueryString["CityID"]));
                 objCmd.ExecuteNonQuery();
                 Response.Redirect("~/AdminPanel/City/CityList.aspx");
+                #endregion Update record
             }
             else
             {
+                #region Add record
                 objCmd.CommandText = "PR_City_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "City Added Successfully";
                 txtCity.Text = txtPin.Text = txtSTD.Text = "";
                 ddState.SelectedIndex = -1;
+                #endregion Add record
             }
 
             objConn.Close();
@@ -114,18 +126,22 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
     #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_City_SelectByPK", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@CityID", Id);
             SqlDataReader objSDR = objCmd.ExecuteReader();
-
+            #endregion Create Command and Set Parameters
+            #region Get data and set data
             if (objSDR.HasRows)
             {
                 while (objSDR.Read())
@@ -153,6 +169,7 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             {
                 lblMsg.Text = "City Not Found!";
             }
+            #endregion Get data and set data
         }
         catch (Exception ex)
         {

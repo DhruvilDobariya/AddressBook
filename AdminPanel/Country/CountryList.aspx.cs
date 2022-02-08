@@ -23,14 +23,15 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
     #region FillCountry
     private void FillCountry()
     {
-        SqlConnection objConn = new SqlConnection();
-        objConn.ConnectionString = "data source=ALEX; initial catalog=AddressBook; Integrated Security=True";
-
+        #region Set Connection
+        SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Bind Data
             SqlCommand objCmd = new SqlCommand();
             objCmd.Connection = objConn;
             objCmd.CommandType = CommandType.StoredProcedure;
@@ -39,6 +40,7 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
             gvCountry.DataSource = objSDR;
             gvCountry.DataBind();
             objConn.Close();
+            #endregion Create Command and Bind Data
         }
         catch (Exception ex)
         {
@@ -67,7 +69,9 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
     #region DeleteCountry
     private void DeleteCountry(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
         try
         {
             if (objConn.State != ConnectionState.Open)
