@@ -69,9 +69,39 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         #region Server side validation
-        if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "" || ddCountry.SelectedIndex == -1)
+        if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "" || ddCountry.SelectedValue == "-1")
         {
-            lblMsg.Text = "Please enter State Name and State Code and Select Country Name";
+            lblMsg.Text = "Please Enter State Name, State Code and Country Name";
+            return;
+        }
+        else if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "")
+        {
+            lblMsg.Text = "Please Enter State Name, State Code";
+            return;
+        }
+        else if (txtCode.Text.Trim() == "" || ddCountry.SelectedValue == "-1")
+        {
+            lblMsg.Text = "Please Enter State Code and Country Name";
+            return;
+        }
+        else if (txtState.Text.Trim() == "" || ddCountry.SelectedValue == "-1")
+        {
+            lblMsg.Text = "Please Enter State Name and Country Name";
+            return;
+        }
+        if (txtState.Text.Trim() == "")
+        {
+            lblMsg.Text = "Please Enter State Name";
+            return;
+        }
+        if (txtCode.Text.Trim() == "")
+        {
+            lblMsg.Text = "Please Enter State Code";
+            return;
+        }
+        if (ddCountry.SelectedValue == "-1")
+        {
+            lblMsg.Text = "Please Enter Country Name";
             return;
         }
         #endregion Server side validation

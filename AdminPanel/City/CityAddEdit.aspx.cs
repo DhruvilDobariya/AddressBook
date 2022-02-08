@@ -68,7 +68,17 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
         #region Server side validation
         if (txtCity.Text.Trim() == "" || ddState.SelectedIndex == -1)
         {
-            lblMsg.Text = "Enter Full and Valid Information";
+            lblMsg.Text = "Please Enter City and Select State";
+            return;
+        }
+        else if (txtCity.Text.Trim() == "")
+        {
+            lblMsg.Text = "Please Select State";
+            return;
+        }
+        else if (ddState.SelectedValue == "-1")
+        {
+            lblMsg.Text = "Please Select State";
             return;
         }
         #endregion Server side validation
