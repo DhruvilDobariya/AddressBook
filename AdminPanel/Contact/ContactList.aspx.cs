@@ -40,8 +40,10 @@ public partial class AdminPanel_Contact_ContactList : System.Web.UI.Page
             SqlDataReader objSDR = objCmd.ExecuteReader();
             gvContact.DataSource = objSDR;
             gvContact.DataBind();
-            objConn.Close();
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -84,9 +86,11 @@ public partial class AdminPanel_Contact_ContactList : System.Web.UI.Page
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactID", Id);
             objCmd.ExecuteNonQuery();
-            objConn.Close();
             lblMsg.Text = "Contact Deleted Successfully!";
             #endregion Create Command and Set Parameters
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

@@ -50,7 +50,9 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
                 ddCountry.DataBind();
             }
 
-            objConn.Close();
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+
             ddCountry.Items.Insert(0, new ListItem("Select Country", "-1"));
         }
         catch (Exception ex)
@@ -68,6 +70,11 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
     #region SubmitForm
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        #region Local variable
+        SqlString strStateName = SqlString.Null;
+        SqlInt32 strCountryID = SqlInt32.Null;
+        SqlString strStateCode = SqlString.Null;
+        #endregion Local variable
         #region Server side validation
         if (txtState.Text.Trim() == "" || txtCode.Text.Trim() == "" || ddCountry.SelectedValue == "-1")
         {
@@ -105,6 +112,14 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
             return;
         }
         #endregion Server side validation
+        #region Set local 
+        if(txtState.Text != "")
+            strStateName = txtState.Text;
+        if (ddCountry.SelectedValue != "")
+            strCountryID = Convert.ToInt32(ddCountry.SelectedValue);
+        if (txtCode.Text != "")
+            strStateCode = txtCode.Text;
+        #endregion Set local variable
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         #endregion Set Connection
@@ -117,9 +132,9 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
             #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
-            objCmd.Parameters.AddWithValue("@StateName", Convert.ToString(txtState.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@StateCode", Convert.ToString(txtCode.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
+            objCmd.Parameters.AddWithValue("@StateName", strStateName);
+            objCmd.Parameters.AddWithValue("@StateCode",strStateCode);
+            objCmd.Parameters.AddWithValue("@CountryID", strCountryID);
             #endregion Create Command and Set Parameters
 
             if (Request.QueryString["StateID"] != null) 
@@ -143,7 +158,8 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
                 #endregion Add record
             }
 
-            objConn.Close();
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
 
         }
         catch (Exception ex)
@@ -168,18 +184,23 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
     #region Fill Controlls
     private void FillControlls(SqlInt32 Id)
     {
+        #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
+        #endregion Set Connection
 
         try
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
 
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_State_SelectByPK", objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@StateID", Id);
             SqlDataReader objSDR = objCmd.ExecuteReader();
+            #endregion Create Command and Set Parameters
 
+            #region Get data and set data
             if (objSDR.HasRows)
             {
                 while (objSDR.Read())
@@ -203,6 +224,10 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
             {
                 lblMsg.Text = "State Not Found!";
             }
+            #endregion Get data and set data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

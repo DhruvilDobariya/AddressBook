@@ -29,25 +29,30 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         #region Local variable
-        SqlString CountryName = txtCountry.Text.Trim();
-        SqlString CountryCode = txtCode.Text.Trim();
+        SqlString CountryName = SqlString.Null;
+        SqlString CountryCode = SqlString.Null; ;
         #endregion Local variable
         #region Server side validation
-        if (CountryName == "" && CountryCode == "")
+        if (txtCountry.Text.Trim() == "" && txtCode.Text.Trim() == "")
         {
             lblMsg.Text = "Please enter Country Name and Country Code";
             return;
         }
-        else if (CountryName == "")
+        else if (txtCountry.Text.Trim() == "")
         {
             lblMsg.Text = "Please enter Country Name";
             return;
         }
-        else if (CountryCode == "")
+        else if (txtCode.Text.Trim() == "")
         {
             lblMsg.Text = "Please enter Country Code";
             return;
         }
+
+        if(txtCountry.Text.Trim() != "")
+            CountryName = txtCountry.Text.Trim();
+        if (txtCode.Text.Trim() != "")
+            CountryCode = txtCode.Text.Trim();
         #endregion Server side validation
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
@@ -88,7 +93,8 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
                 #endregion Add record
             }
 
-            objConn.Close();
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
 
         }
         catch (Exception ex)
@@ -149,6 +155,9 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
                 lblMsg.Text = "Country Not Found!";
             }
             #endregion Get data and set data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

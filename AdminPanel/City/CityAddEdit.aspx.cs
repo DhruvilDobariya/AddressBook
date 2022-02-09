@@ -47,7 +47,8 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 ddState.DataTextField = "StateName";
                 ddState.DataBind();
             }
-            objConn.Close();
+            if(objConn.State == ConnectionState.Open)
+                objConn.Close();
             ddState.Items.Insert(0, new ListItem("Select State", "-1"));
         }
         catch (Exception ex)
@@ -65,6 +66,12 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
     #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        #region Local variable
+        SqlString strCityName = SqlString.Null;
+        SqlInt32 strStateID = SqlInt32.Null;
+        SqlString strPinCode = SqlString.Null;
+        SqlString StrSTDCode = SqlString.Null;
+        #endregion Local variable
         #region Server side validation
         if (txtCity.Text.Trim() == "" || ddState.SelectedIndex == -1)
         {
@@ -82,6 +89,16 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             return;
         }
         #endregion Server side validation
+        #region Set local variable
+        if(txtCity.Text.Trim() != "")
+            strCityName = txtCity.Text.Trim();
+        if (ddState.SelectedValue != "-1")
+            strStateID = Convert.ToInt32(ddState.SelectedValue);
+        if (txtPin.Text.Trim() != "")
+            strPinCode = txtPin.Text.Trim();
+        if (txtPin.Text.Trim() != "")
+            StrSTDCode = txtSTD.Text.Trim();
+        #endregion Set local variable
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         #endregion Set Connection
@@ -93,10 +110,10 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
             #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
-            objCmd.Parameters.AddWithValue("@CityName", Convert.ToString(txtCity.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
-            objCmd.Parameters.AddWithValue("@PinCode", Convert.ToString(txtPin.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@STDCode", Convert.ToString(txtSTD.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@CityName", strCityName);
+            objCmd.Parameters.AddWithValue("@StateID", strStateID);
+            objCmd.Parameters.AddWithValue("@PinCode", strPinCode);
+            objCmd.Parameters.AddWithValue("@STDCode", StrSTDCode);
             #endregion Create Command and Set Parameters
 
             if (Request.QueryString["CityID"] != null)
@@ -119,7 +136,8 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 #endregion Add record
             }
 
-            objConn.Close();
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
 
         }
         catch (Exception ex)
@@ -187,6 +205,9 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 lblMsg.Text = "City Not Found!";
             }
             #endregion Get data and set data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

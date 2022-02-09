@@ -53,9 +53,11 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 ddContactCategory.DataTextField = "ContactCategoryName";
                 ddContactCategory.DataBind();
             }
-            objConn.Close();
             ddContactCategory.Items.Insert(0, new ListItem("Select Contact Category", "-1"));
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -92,10 +94,11 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 ddCity.DataTextField = "CityName";
                 ddCity.DataBind();
             }
-
-            objConn.Close();
             ddCity.Items.Insert(0, new ListItem("Select City", "-1"));
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -132,9 +135,11 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 ddState.DataTextField = "StateName";
                 ddState.DataBind();
             }
-            objConn.Close();
             ddState.Items.Insert(0, new ListItem("Select State", "-1"));
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -172,9 +177,11 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 ddCountry.DataBind();
             }
 
-            objConn.Close();
             ddCountry.Items.Insert(0, new ListItem("Select Country", "-1"));
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -192,6 +199,21 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         #region Local Variable
+        SqlString strContact = SqlString.Null;
+        SqlInt32 strContactCategoryID = SqlInt32.Null;
+        SqlInt32 strCityID = SqlInt32.Null;
+        SqlInt32 strStateID = SqlInt32.Null;
+        SqlInt32 strCountryID = SqlInt32.Null;
+        SqlString strContactNo = SqlString.Null;
+        SqlString strWhatsappNo = SqlString.Null;
+        SqlDateTime strBirthDate = SqlDateTime.Null;
+        SqlString strEmil = SqlString.Null;
+        SqlInt32 strAge = SqlInt32.Null;
+        SqlString strBloodGroup = SqlString.Null;
+        SqlString strLinkedin = SqlString.Null;
+        SqlString strFacebook = SqlString.Null;
+        SqlString strAddress = SqlString.Null;
+
         bool flag = false;
         int i = 1;
         string temp = "";
@@ -238,6 +260,38 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         }
 
         #endregion Server side validaton
+        #region Set local variable
+        if (txtContact.Text.Trim() != "")
+            strContact = txtContact.Text.Trim();
+        if (ddContactCategory.SelectedValue != "-1")
+            strContactCategoryID = Convert.ToInt32(ddContactCategory.SelectedValue);
+        if (ddCity.SelectedValue != "-1")
+            strCityID = Convert.ToInt32(ddCity.SelectedValue);
+        if (ddState.SelectedValue != "-1")
+            strStateID = Convert.ToInt32(ddState.SelectedValue);
+        if (ddCountry.SelectedValue != "-1")
+            strCountryID = Convert.ToInt32(ddCountry.SelectedValue);
+        if (txtContact.Text.Trim() != "")
+            strContact = txtContact.Text.Trim();
+        if (txtContactNo.Text.Trim() != "")
+            strContactNo = txtContactNo.Text.Trim();
+        if (txtWhatsappNo.Text.Trim() != "")
+            strWhatsappNo = txtWhatsappNo.Text.Trim();
+        if (txtBirthDate.Text.Trim() != "")
+            strBirthDate = Convert.ToDateTime(txtBirthDate.Text.Trim());
+        if (txtEmail.Text.Trim() != "")
+            strEmil = txtEmail.Text.Trim();
+        if (txtAge.Text.Trim() != "")
+            strAge = Convert.ToInt32(txtAge.Text.Trim());
+        if (txtBloodGroup.Text.Trim() != "")
+            strBloodGroup = txtBloodGroup.Text.Trim();
+        if (txtFecebook.Text.Trim() != "")
+            strFacebook = txtFecebook.Text.Trim();
+        if (txtLinkedin.Text.Trim() != "")
+            strLinkedin = txtLinkedin.Text.Trim();
+        if (txtAddress.Text.Trim() != "")
+            strAddress = txtAddress.Text.Trim();
+        #endregion Set local variable
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         #endregion Set Connection
@@ -249,20 +303,20 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             #region Create Command and Set Parameters
             SqlCommand objCmd = objConn.CreateCommand();
             objCmd.CommandType = CommandType.StoredProcedure;
-            objCmd.Parameters.AddWithValue("@ContactName", Convert.ToString(txtContact.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@ContactCategoryID", Convert.ToInt32(ddContactCategory.SelectedValue));
-            objCmd.Parameters.AddWithValue("@CityID", Convert.ToInt32(ddCity.SelectedValue));
-            objCmd.Parameters.AddWithValue("@StateID", Convert.ToInt32(ddState.SelectedValue));
-            objCmd.Parameters.AddWithValue("@CountryID", Convert.ToInt32(ddCountry.SelectedValue));
-            objCmd.Parameters.AddWithValue("@ContactNo", Convert.ToString(txtContactNo.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@WhatsappNo", Convert.ToString(txtWhatsappNo.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@BirthDate", Convert.ToString(txtBirthDate.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@Email", Convert.ToString(txtEmail.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@Age", Convert.ToString(txtAge.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@BloodGroup", Convert.ToString(txtBloodGroup.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@FacebookID", Convert.ToString(txtFecebook.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@LinkedInID", Convert.ToString(txtLinkedin.Text.Trim()));
-            objCmd.Parameters.AddWithValue("@Address", Convert.ToString(txtAddress.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@ContactName", strContact);
+            objCmd.Parameters.AddWithValue("@ContactCategoryID", strContactCategoryID);
+            objCmd.Parameters.AddWithValue("@CityID", strCityID);
+            objCmd.Parameters.AddWithValue("@StateID", strStateID);
+            objCmd.Parameters.AddWithValue("@CountryID", strCountryID);
+            objCmd.Parameters.AddWithValue("@ContactNo", strContactNo);
+            objCmd.Parameters.AddWithValue("@WhatsappNo", strWhatsappNo);
+            objCmd.Parameters.AddWithValue("@BirthDate", strBirthDate);
+            objCmd.Parameters.AddWithValue("@Email", strEmil);
+            objCmd.Parameters.AddWithValue("@Age", strAge);
+            objCmd.Parameters.AddWithValue("@BloodGroup", strBloodGroup);
+            objCmd.Parameters.AddWithValue("@FacebookID", strFacebook);
+            objCmd.Parameters.AddWithValue("@LinkedInID", strLinkedin);
+            objCmd.Parameters.AddWithValue("@Address", strAddress);
             #endregion Create Command and Set Parameters
 
 
@@ -285,8 +339,10 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 lblMsg.Text = "Contact Added Successfully";
                 #endregion Add record
             }
-            objConn.Close();
-            
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+
         }
         catch (Exception ex)
         {
@@ -388,6 +444,9 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
                 lblMsg.Text = "Contact Not Found!";
             }
             #endregion Get data and set data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

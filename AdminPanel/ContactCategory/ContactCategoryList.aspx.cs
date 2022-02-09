@@ -40,8 +40,10 @@ public partial class AdminPanel_ContactCategory_ContactCategoryList : System.Web
             SqlDataReader objSDR = objCmd.ExecuteReader();
             gvContactCategory.DataSource = objSDR;
             gvContactCategory.DataBind();
-            objConn.Close();
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -84,9 +86,11 @@ public partial class AdminPanel_ContactCategory_ContactCategoryList : System.Web
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@ContactCategoryId", Id);
             objCmd.ExecuteNonQuery();
-            objConn.Close();
             lblMsg.Text = "Contact Category Deleted Successfully!";
             #endregion Create Command and Set Parameters
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

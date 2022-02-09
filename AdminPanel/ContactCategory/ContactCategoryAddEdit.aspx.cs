@@ -28,6 +28,9 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
     #region Submit Form
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        #region Local variable
+        SqlString strContactCategory = SqlString.Null;
+        #endregion Local variable
         #region Server side validation
         if (txtContactCategory.Text.Trim() == "")
         {
@@ -35,6 +38,10 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
             return;
         }
         #endregion Server side validation
+        #region Set local 
+        if(txtContactCategory.Text.Trim() != "")
+            strContactCategory = txtContactCategory.Text.Trim();
+        #endregion Set local variable
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         #endregion Set Connection
@@ -48,7 +55,7 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
             SqlCommand objCmd = new SqlCommand();
             objCmd.Connection = objConn;
             objCmd.CommandType = CommandType.StoredProcedure;
-            objCmd.Parameters.AddWithValue("@ContactCategoryName", Convert.ToString(txtContactCategory.Text.Trim()));
+            objCmd.Parameters.AddWithValue("@ContactCategoryName", strContactCategory);
             #endregion Create Command and Set Parameters
 
             if (Request.QueryString["ContactCategoryID"] != null)
@@ -71,8 +78,9 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
                 #endregion Add record
             }
 
-            objConn.Close();
-            
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+
         }
         catch (Exception ex)
         {
@@ -128,6 +136,9 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
                 lblMsg.Text = "Contact Category Not Found!";
             }
             #endregion Get data and set data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {

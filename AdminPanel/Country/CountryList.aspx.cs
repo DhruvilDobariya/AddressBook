@@ -39,8 +39,10 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
             SqlDataReader objSDR = objCmd.ExecuteReader();
             gvCountry.DataSource = objSDR;
             gvCountry.DataBind();
-            objConn.Close();
             #endregion Create Command and Bind Data
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
         }
         catch (Exception ex)
         {
@@ -76,11 +78,17 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
         {
             if (objConn.State != ConnectionState.Open)
                 objConn.Open();
+
+            #region Create Command and Set Parameters
             SqlCommand objCmd = new SqlCommand("PR_Country_DeleteByPK",objConn);
             objCmd.CommandType = CommandType.StoredProcedure;
             objCmd.Parameters.AddWithValue("@CountryID", Id);
             objCmd.ExecuteNonQuery();
-            objConn.Close();
+            #endregion Create Command and Set Parameters
+
+            if (objConn.State == ConnectionState.Open)
+                objConn.Close();
+
             lblMsg.Text = "Country Deleted Successfully!";
         }
         catch(Exception ex)
