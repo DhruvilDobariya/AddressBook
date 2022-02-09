@@ -124,7 +124,14 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("Cannot insert duplicate key row in object 'dbo.City' with unique index 'IX_City'."))
+            {
+                lblMsg.Text = "City alrady exist!";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

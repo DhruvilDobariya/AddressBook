@@ -148,7 +148,14 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("Cannot insert duplicate key row in object 'dbo.State' with unique index 'IX_State'."))
+            {
+                lblMsg.Text = "State alrady exist!";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

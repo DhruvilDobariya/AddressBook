@@ -93,7 +93,14 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if(ex.Message.Contains("Violation of UNIQUE KEY constraint 'IX_Country'. Cannot insert duplicate key in object 'dbo.Country'."))
+            {
+                lblMsg.Text = "Country alrady exist!";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

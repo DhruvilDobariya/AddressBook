@@ -76,7 +76,14 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if(ex.Message.Contains("Cannot insert duplicate key row in object 'dbo.ContactCategory' with unique index 'IX_ContactCategory'."))
+            {
+                lblMsg.Text = "Contact Category alrady exist!";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {
