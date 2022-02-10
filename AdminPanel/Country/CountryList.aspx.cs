@@ -93,7 +93,14 @@ public partial class AdminPanel_Country_Read : System.Web.UI.Page
         }
         catch(Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+            {
+                lblMsg.Text = "This Country contain some records, So please delete these record, If you want to delete this country.";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

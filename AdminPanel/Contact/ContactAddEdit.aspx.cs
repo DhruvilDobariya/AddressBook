@@ -258,45 +258,51 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             lblMsg.Text = "</br> Please : </br>" + temp;
             return;
         }*/
-        if (txtContact.Text.Trim() != "")
+        if (txtContact.Text.Trim() == "")
         {
-            temp += "<li>" + lblContact + "</li>";
+            temp += "<li>" + lblContact.Text.Trim() + "</li>";
             flag = true;
         }
-        if (ddContactCategory.SelectedValue != "-1")
+        if (ddContactCategory.SelectedValue == "-1")
         {
-            temp += "<li>" + lblContactCategory + "</li>"; ;
+            temp += "<li>" + lblContactCategory.Text.Trim() + "</li>"; ;
             flag = true;
         }
-        if (ddCity.SelectedValue != "-1")
+        if (ddCity.SelectedValue == "-1")
         {
-            temp += "<li>" + lblCity + "</li>";
+            temp += "<li>" + lblCity.Text.Trim() + "</li>";
             flag = true;
         }
-        if (ddState.SelectedValue != "-1")
+        if (ddState.SelectedValue == "-1")
         {
-            temp += "<li>" + lblState + "</li>";
+            temp += "<li>" + lblState.Text.Trim() + "</li>";
             flag = true;
         }
-        if (ddCountry.SelectedValue != "-1")
+        if (ddCountry.SelectedValue == "-1")
         {
-            temp += "<li>" + lblCountry + "</li>";
+            temp += "<li>" + lblCountry.Text.Trim() + "</li>";
             flag = true;
         }
-        if (txtContactNo.Text.Trim() != "")
+        if (txtContactNo.Text.Trim() == "")
         {
-            temp += "<li>" + lblContactNo + "</li>";
+            temp += "<li>" + lblContactNo.Text.Trim() + "</li>";
             flag = true;
         }
-        if (txtEmail.Text.Trim() != "")
+        if (txtEmail.Text.Trim() == "")
         {
-            temp += "<li>" + lblEmail + "</li>";
+            temp += "<li>" + lblEmail.Text.Trim() + "</li>";
             flag = true;
         }
-        if (txtAddress.Text.Trim() != "")
+        if (txtAddress.Text.Trim() == "")
         {
-            temp += "<li>" + lblAddress + "</li>";
+            temp += "<li>" + lblAddress.Text.Trim() + "</li>";
             flag = true;
+        }
+
+        if (flag)
+        {
+            lblMsg.Text = "<ul> Please : " + temp + "</ul>";
+            return;
         }
 
         if (flag)

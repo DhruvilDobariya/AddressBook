@@ -94,7 +94,14 @@ public partial class AdminPanel_ContactCategory_ContactCategoryList : System.Web
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+            {
+                lblMsg.Text = "This Contact Category contain some records, So please delete these record, If you want to delete this contact category.";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

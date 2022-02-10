@@ -48,11 +48,6 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
             lblMsg.Text = "Please enter Country Code";
             return;
         }
-
-        if(txtCountry.Text.Trim() != "")
-            CountryName = txtCountry.Text.Trim();
-        if (txtCode.Text.Trim() != "")
-            CountryCode = txtCode.Text.Trim();
         #endregion Server side validation
         #region Set local variable
         if (txtCountry.Text.Trim() != "")

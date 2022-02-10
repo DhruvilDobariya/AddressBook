@@ -94,7 +94,14 @@ public partial class AdminPanel_City_CityList : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+            {
+                lblMsg.Text = "This City contain some records, So please delete these record, If you want to delete this city.";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally
         {

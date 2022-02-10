@@ -93,7 +93,14 @@ public partial class AdminPanel_State_StateList : System.Web.UI.Page
         }
         catch (Exception ex)
         {
-            lblMsg.Text = ex.Message;
+            if (ex.Message.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+            {
+                lblMsg.Text = "This State contain some records, So please delete these record, If you want to delete this state.";
+            }
+            else
+            {
+                lblMsg.Text = ex.Message;
+            }
         }
         finally 
         {
