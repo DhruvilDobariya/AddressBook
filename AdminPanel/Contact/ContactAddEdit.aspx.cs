@@ -219,7 +219,7 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         string temp = "";
         #endregion Local Variable
         #region Server side validaton
-        
+        /* Using Dictionary
         IDictionary<TextBox, Label> textBoxValidation = new Dictionary<TextBox, Label>()
         {
             {txtContact, lblContact },
@@ -257,6 +257,52 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
         {
             lblMsg.Text = "</br> Please : </br>" + temp;
             return;
+        }*/
+        if (txtContact.Text.Trim() != "")
+        {
+            temp += "<li>" + lblContact + "</li>";
+            flag = true;
+        }
+        if (ddContactCategory.SelectedValue != "-1")
+        {
+            temp += "<li>" + lblContactCategory + "</li>"; ;
+            flag = true;
+        }
+        if (ddCity.SelectedValue != "-1")
+        {
+            temp += "<li>" + lblCity + "</li>";
+            flag = true;
+        }
+        if (ddState.SelectedValue != "-1")
+        {
+            temp += "<li>" + lblState + "</li>";
+            flag = true;
+        }
+        if (ddCountry.SelectedValue != "-1")
+        {
+            temp += "<li>" + lblCountry + "</li>";
+            flag = true;
+        }
+        if (txtContactNo.Text.Trim() != "")
+        {
+            temp += "<li>" + lblContactNo + "</li>";
+            flag = true;
+        }
+        if (txtEmail.Text.Trim() != "")
+        {
+            temp += "<li>" + lblEmail + "</li>";
+            flag = true;
+        }
+        if (txtAddress.Text.Trim() != "")
+        {
+            temp += "<li>" + lblAddress + "</li>";
+            flag = true;
+        }
+
+        if (flag)
+        {
+            lblMsg.Text = "<ul> Please : " + temp + "</ul>";
+            return;
         }
 
         #endregion Server side validaton
@@ -271,8 +317,6 @@ public partial class AdminPanel_Contact_ContactAddEdit : System.Web.UI.Page
             strStateID = Convert.ToInt32(ddState.SelectedValue);
         if (ddCountry.SelectedValue != "-1")
             strCountryID = Convert.ToInt32(ddCountry.SelectedValue);
-        if (txtContact.Text.Trim() != "")
-            strContact = txtContact.Text.Trim();
         if (txtContactNo.Text.Trim() != "")
             strContactNo = txtContactNo.Text.Trim();
         if (txtWhatsappNo.Text.Trim() != "")

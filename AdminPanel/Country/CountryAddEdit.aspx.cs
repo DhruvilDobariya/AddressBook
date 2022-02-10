@@ -29,8 +29,8 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         #region Local variable
-        SqlString CountryName = SqlString.Null;
-        SqlString CountryCode = SqlString.Null; ;
+        SqlString strCountryName = SqlString.Null;
+        SqlString strCountryCode = SqlString.Null; ;
         #endregion Local variable
         #region Server side validation
         if (txtCountry.Text.Trim() == "" && txtCode.Text.Trim() == "")
@@ -54,6 +54,16 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
         if (txtCode.Text.Trim() != "")
             CountryCode = txtCode.Text.Trim();
         #endregion Server side validation
+        #region Set local variable
+        if (txtCountry.Text.Trim() != "")
+        {
+            strCountryName = txtCountry.Text.Trim();
+        }
+        if (txtCode.Text.Trim() != "")
+        {
+            strCountryCode = txtCode.Text.Trim();
+        }
+        #endregion Set local variable
         #region Set Connection
         SqlConnection objConn = new SqlConnection(ConfigurationManager.ConnectionStrings["AddressBookConnectionString"].ConnectionString);
         #endregion Set Connection
@@ -68,8 +78,8 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
             objCmd.Connection = objConn;
             objCmd.CommandType = CommandType.StoredProcedure;
 
-            objCmd.Parameters.AddWithValue("@CountryName", CountryName);
-            objCmd.Parameters.AddWithValue("@CountryCode", CountryCode);
+            objCmd.Parameters.AddWithValue("@CountryName", strCountryName);
+            objCmd.Parameters.AddWithValue("@CountryCode", strCountryCode);
             #endregion Create Command and Set Parameters
 
             if (Request.QueryString["CountryID"] != null)
