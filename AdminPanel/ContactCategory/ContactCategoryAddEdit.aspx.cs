@@ -73,8 +73,7 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
                 objCmd.CommandText = "PR_ContactCategory_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "Contact Category Added Successfully";
-                txtContactCategory.Text = "";
-                txtContactCategory.Focus();
+                ClearControls();
                 #endregion Add record
             }
 
@@ -151,4 +150,9 @@ public partial class AdminPanel_ContactCategory_ContactCategoryAddEdit : System.
         }
     }
     #endregion Fill Controlls
+    private void ClearControls()
+    {
+        txtContactCategory.Text = "";
+        txtContactCategory.Focus();
+    }
 }

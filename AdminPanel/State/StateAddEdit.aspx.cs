@@ -152,9 +152,7 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
                 objCmd.CommandText = "PR_State_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "State Added Successfully";
-                txtState.Text = txtCode.Text = "";
-                ddCountry.SelectedIndex = -1;
-                txtState.Focus();
+                ClearControl();
                 #endregion Add record
             }
 
@@ -240,4 +238,10 @@ public partial class AdminPanel_State_StateAddEdit : System.Web.UI.Page
         }
     }
     #endregion Fill Controlls
+    private void ClearControl()
+    {
+        txtState.Text = txtCode.Text = "";
+        ddCountry.SelectedIndex = -1;
+        txtState.Focus();
+    }
 }

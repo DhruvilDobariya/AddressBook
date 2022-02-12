@@ -92,9 +92,7 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
                 objCmd.CommandText = "PR_Country_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "Country Added Successfully";
-                txtCountry.Text = "";
-                txtCode.Text = "";
-                txtCountry.Focus();
+                ClearControl();
                 #endregion Add record
             }
 
@@ -175,4 +173,10 @@ public partial class AdminPanel_Country_CountryAddEdit : System.Web.UI.Page
         }
     }
     #endregion FillControlls
+    private void ClearControl()
+    {
+        txtCountry.Text = "";
+        txtCode.Text = "";
+        txtCountry.Focus();
+    }
 }

@@ -31,3 +31,7 @@ table th, table td
 { 
     white-space: nowrap;
 }
+.scrollmanu{
+    overflow: auto;
+    white-space : nowrap;
+}

@@ -131,8 +131,7 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
                 objCmd.CommandText = "PR_City_Insert";
                 objCmd.ExecuteNonQuery();
                 lblMsg.Text = "City Added Successfully";
-                txtCity.Text = txtPin.Text = txtSTD.Text = "";
-                ddState.SelectedIndex = -1;
+                ClearControls();
                 #endregion Add record
             }
 
@@ -220,4 +219,9 @@ public partial class AdminPanel_City_CityAddEdit : System.Web.UI.Page
         }
     }
     #endregion Fill Controlls
+    private void ClearControls()
+    {
+        txtCity.Text = txtPin.Text = txtSTD.Text = "";
+        ddState.SelectedIndex = -1;
+    }
 }

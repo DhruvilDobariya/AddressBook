@@ -23,22 +23,21 @@
                         <asp:RequiredFieldValidator ID="rfvCotactCategory" runat="server" ErrorMessage="Please Select Contact Category" ControlToValidate="ddContactCategory" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
                     </div>
                     <div class="col-md-6">
-                        <asp:Label runat="server" ID="lblCity" CssClass="form-lable m-1">Select City Name</asp:Label>
-                        <asp:DropDownList ID="ddCity" runat="server" CssClass="form-select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rfvCity" runat="server" ErrorMessage="Please Select City" ControlToValidate="ddCity" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
+                        <asp:Label runat="server" ID="lblCountry" CssClass="form-lable m-1">Select Country Name</asp:Label>
+                        <asp:DropDownList ID="ddCountry" runat="server" CssClass="form-select" AutoPostBack="True" OnSelectedIndexChanged="ddCountry_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvCountry" runat="server" ErrorMessage="Please Select Country" ControlToValidate="ddCountry" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
                     </div>
-
                 </div>
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <asp:Label runat="server" ID="lblState" CssClass="form-lable m-1">Select State Name</asp:Label>
-                        <asp:DropDownList ID="ddState" runat="server" CssClass="form-select"></asp:DropDownList>
+                        <asp:DropDownList ID="ddState" runat="server" CssClass="form-select" AutoPostBack="True" OnSelectedIndexChanged="ddState_SelectedIndexChanged"></asp:DropDownList>
                         <asp:RequiredFieldValidator ID="rfvState" runat="server" ErrorMessage="Please Select State" ControlToValidate="ddState" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
                     </div>
                     <div class="col-md-6">
-                        <asp:Label runat="server" ID="lblCountry" CssClass="form-lable m-1">Select Country Name</asp:Label>
-                        <asp:DropDownList ID="ddCountry" runat="server" CssClass="form-select"></asp:DropDownList>
-                        <asp:RequiredFieldValidator ID="rfvCountry" runat="server" ErrorMessage="Please Select Country" ControlToValidate="ddCountry" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
+                        <asp:Label runat="server" ID="lblCity" CssClass="form-lable m-1">Select City Name</asp:Label>
+                        <asp:DropDownList ID="ddCity" runat="server" CssClass="form-select"></asp:DropDownList>
+                        <asp:RequiredFieldValidator ID="rfvCity" runat="server" ErrorMessage="Please Select City" ControlToValidate="ddCity" Display="Dynamic" ForeColor="Red" InitialValue="-1"></asp:RequiredFieldValidator>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -55,7 +54,7 @@
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label class="form-lable m-1">Enter Birth Date</label>
-                        <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control m-1"></asp:TextBox>
+                        <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control m-1" TextMode="Date"></asp:TextBox>
                         <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate" Display="Dynamic" ErrorMessage="Enter valid Date of Birth" ForeColor="Red" Operator="DataTypeCheck" Type="Date"></asp:CompareValidator>
                     </div>
                     <div class="col-md-6">
